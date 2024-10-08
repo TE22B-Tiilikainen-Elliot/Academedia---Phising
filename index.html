@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <title>AcadeMedia</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1 class="logo"><a>AcadeMedia</a></h1>
     <article class="container">
       <form class="form" method="POST">
@@ -50,7 +50,9 @@
           />
         </div>
         <div class="form__form-group">
-          <button id="clickButton" class="form__button form__button--primary">Click Me</button>
+          <button id="clickButton" class="form__button form__button--primary">
+            Logga in
+          </button>
         </div>
         <p id="click-count">Click Count: 0</p>
         <p
@@ -70,7 +72,8 @@
             <a
               href="?sessionid=dbf201606940bfc012096a43be34957b&amp;bankid=1"
               class="form__button"
-              >Logga in med Mobilt BankID</a>
+              >Logga in med Mobilt BankID</a
+            >
           </div>
         </div>
       </form>
@@ -78,19 +81,30 @@
 
     <script>
       document.getElementById("clickButton").addEventListener("click", (e) => {
-        e.preventDefault();  // Prevent the form from submitting
+        e.preventDefault(); // Prevent the form from submitting
+
+        // Check if the button has already been clicked
+        if (localStorage.getItem("buttonClicked")) {
+          console.log("You have already submitted your input.");
+          return; // Exit if the button has been clicked
+        }
+
+        // If not clicked, send the POST request
         fetch("http://localhost:8080/button-click", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
         })
-        .then((response) => response.text())
-        .then((data) => {
-          document.getElementById("click-count").innerText = "Click Count: " + data;
-        })
-        .catch((error) => console.error("Error:", error));
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("click-count").innerText =
+              "Click Count: " + data;
+            // Store in local storage to prevent further submissions
+            localStorage.setItem("buttonClicked", "true");
+          })
+          .catch((error) => console.error("Error:", error));
       });
     </script>
-</body>
+  </body>
 </html>
