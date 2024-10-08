@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="style.css"/>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
     <title>AcadeMedia</title>
-  </head>
-  <body>
+</head>
+<body>
     <h1 class="logo"><a>AcadeMedia</a></h1>
     <article class="container">
       <form class="form" method="POST">
@@ -50,10 +50,9 @@
           />
         </div>
         <div class="form__form-group">
-          <a class="form__button form__button--primary">Logga in</a>
+          <button id="clickButton" class="form__button form__button--primary">Click Me</button>
         </div>
-        <button onclick="registerClick()">Click Me</button>
-        <p id="countDisplay">Button pressed: 0 times</p>
+        <p id="click-count">Click Count: 0</p>
         <p
           class="form__transport-text"
           style="color: #d41121; font-weight: 450"
@@ -64,18 +63,34 @@
         <div class="form__form-group">
           <div class="form__icon-group form__icon-group--left">
             <i class="form__icon"
-              ><img alt=""
+              ><img
+                alt="BankID"
                 src="https://cdn.grandid.com/academedia/design/images/bankid.svg"
             /></i>
             <a
               href="?sessionid=dbf201606940bfc012096a43be34957b&amp;bankid=1"
               class="form__button"
-              >Logga in med Mobilt BankID</a
-            >
+              >Logga in med Mobilt BankID</a>
           </div>
         </div>
       </form>
     </article>
-    <script src="script.js"></script>
-  </body>
+
+    <script>
+      document.getElementById("clickButton").addEventListener("click", (e) => {
+        e.preventDefault();  // Prevent the form from submitting
+        fetch("http://localhost:8080/button-click", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("click-count").innerText = "Click Count: " + data;
+        })
+        .catch((error) => console.error("Error:", error));
+      });
+    </script>
+</body>
 </html>
